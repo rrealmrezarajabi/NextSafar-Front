@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Vazirmatn, Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import { Providers } from "./providers";
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -22,7 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl" className={cn("font-sans", geist.variable)}>
-      <body className={vazirmatn.className}>{children}</body>
+      <body className={vazirmatn.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
