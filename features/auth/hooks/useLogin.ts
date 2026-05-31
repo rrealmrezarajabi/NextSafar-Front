@@ -29,7 +29,7 @@ export function useLogin() {
     },
 
     onError: (error) => {
-      toast.error(getErrorMessage(error));
+      toast.error(getErrorMessage(error),{position:"bottom-center"});
     },
   });
 }
