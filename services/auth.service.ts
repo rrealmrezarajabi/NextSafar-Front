@@ -1,10 +1,14 @@
 import { api } from "./api";
+
 import type {
   LoginPayload,
-  LoginResponse,
   RegisterOwnerPayload,
-  RegisterOwnerResponse,
   RegisterUserPayload,
+} from "@/schemas/auth.schema";
+
+import type {
+  LoginResponse,
+  RegisterOwnerResponse,
   RegisterUserResponse,
   RefreshTokenResponse,
 } from "@/types/auth.types";
