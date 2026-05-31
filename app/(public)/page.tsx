@@ -1,3 +1,5 @@
+import { TripSearchForm } from "@/features/trips";
+
 export default function HomePage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
@@ -8,6 +10,7 @@ export default function HomePage() {
       <p className="mt-4 text-[#64748B]">
         سفر خود را جستجو کنید و بلیط خود را آنلاین رزرو کنید.
       </p>
+      <TripSearchForm />
     </section>
   );
 }
