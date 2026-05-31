@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema, type LoginPayload } from "@/schemas/auth.schema";
 import { useLogin } from "../hooks/useLogin";
+import Link from "next/link";
 
 export function LoginForm() {
   const loginMutation = useLogin();
@@ -76,6 +77,9 @@ export function LoginForm() {
       >
         {loginMutation.isPending ? "در حال ورود..." : "ورود"}
       </button>
+      <p className="text-blue-400 text-center font-medium text-fg-brand underline hover:no-underline">
+        <Link href="/register">اگر حساب ندارید ثبت نام کنید</Link>
+      </p>
     </form>
   );
 }

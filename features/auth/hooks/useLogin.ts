@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
 
@@ -28,8 +28,8 @@ export function useLogin() {
       }
     },
 
-    onError: () => {
-      toast.error("شماره موبایل یا رمز عبور اشتباه است");
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
     },
   });
 }

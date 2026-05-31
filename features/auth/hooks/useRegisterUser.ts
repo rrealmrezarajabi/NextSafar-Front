@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export function useRegisterUser() {
   const router = useRouter();
@@ -23,8 +24,8 @@ export function useRegisterUser() {
       router.push("/user/dashboard");
     },
 
-    onError: () => {
-      toast.error("ثبت‌نام انجام نشد");
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
     },
   });
 }
