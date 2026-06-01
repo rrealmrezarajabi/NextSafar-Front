@@ -11,6 +11,7 @@ import type {
   RegisterOwnerResponse,
   RegisterUserResponse,
   RefreshTokenResponse,
+  UserProfile,
 } from "@/types/auth.types";
 
 export const authService = {
@@ -46,6 +47,12 @@ export const authService = {
       "/api/accounts/refresh-token/",
       { refresh },
     );
+
+    return res.data;
+  },
+  
+  me: async () => {
+    const res = await api.get<UserProfile>("/api/accounts/me/");
 
     return res.data;
   },

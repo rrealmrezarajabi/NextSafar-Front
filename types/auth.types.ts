@@ -10,6 +10,7 @@ export interface Account {
 export interface UserProfile extends Account {
   phone: string;
   email: string;
+  company_name: string | null;
 }
 
 export interface LoginResponse {

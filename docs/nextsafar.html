@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Project Spec v2 - Bus Ticket Frontend</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --surface3: #1e2d45;
+    --border: #1e3a5f;
+    --border2: #2a4a72;
+    --accent: #3b82f6;
+    --accent2: #60a5fa;
+    --accent3: #93c5fd;
+    --green: #10b981;
+    --green2: #34d399;
+    --amber: #f59e0b;
+    --amber2: #fcd34d;
+    --red: #ef4444;
+    --red2: #f87171;
+    --purple: #8b5cf6;
+    --purple2: #a78bfa;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --code-bg: #0d1b2e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+    direction: rtl;
+  }
+
+  /* ─── NAV ─── */
+  .sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+    transition: transform .3s;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sidebar-logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  .sidebar-logo-text { font-size: 13px; font-weight: 700; line-height: 1.3; }
+  .sidebar-logo-sub { font-size: 11px; color: var(--text3); }
+
+  .nav-section { padding: 0 12px; margin-bottom: 8px; }
+  .nav-section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--text3);
+    padding: 6px 8px; margin-bottom: 4px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-radius: 8px;
+    font-size: 13px; color: var(--text2);
+    cursor: pointer; text-decoration: none;
+    transition: all .15s; margin-bottom: 2px;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: rgba(59,130,246,.15); color: var(--accent2); }
+  .nav-item .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text3); flex-shrink: 0; transition: background .15s;
+  }
+  .nav-item:hover .dot, .nav-item.active .dot { background: var(--accent); }
+
+  /* ─── MAIN ─── */
+  .main {
+    margin-right: 280px;
+    min-height: 100vh;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #0b1e3d 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 60px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(59,130,246,.12) 0%, transparent 70%);
+    transform: translateX(-50%);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(139,92,246,.08) 0%, transparent 70%);
+  }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.3);
+    color: var(--accent2); border-radius: 100px;
+    padding: 4px 14px; font-size: 12px; font-weight: 600;
+    margin-bottom: 24px; position: relative; z-index: 1;
+  }
+
+  .hero h1 {
+    font-size: 52px; font-weight: 900; line-height: 1.15;
+    background: linear-gradient(135deg, #e2e8f0 0%, #60a5fa 60%, #818cf8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; position: relative; z-index: 1; margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-size: 17px; color: var(--text2); max-width: 560px;
+    line-height: 1.7; position: relative; z-index: 1; margin-bottom: 36px;
+  }
+
+  .hero-chips {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    position: relative; z-index: 1;
+  }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+    color: var(--text2);
+  }
+
+  /* ─── CONTENT AREA ─── */
+  .content { max-width: 900px; margin: 0 auto; padding: 56px 60px; }
+
+  /* ─── SECTION DIVIDER ─── */
+  .part-divider {
+    display: flex; align-items: center; gap: 20px;
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(59,130,246,.1) 100%);
+    border: 1px solid var(--border2); border-radius: 16px;
+    padding: 24px 30px; margin: 56px 0 40px;
+  }
+
+  .part-number {
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900;
+  }
+
+  .part-number.blue { background: linear-gradient(135deg, var(--accent), #1d4ed8); }
+  .part-number.purple { background: linear-gradient(135deg, var(--purple), #5b21b6); }
+
+  .part-title { font-size: 24px; font-weight: 800; }
+  .part-desc { font-size: 13px; color: var(--text2); margin-top: 3px; }
+
+  /* ─── HEADINGS ─── */
+  h2 {
+    font-size: 22px; font-weight: 800; margin: 40px 0 16px;
+    display: flex; align-items: center; gap: 10px; color: var(--text);
+  }
+
+  h2 .h-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 16px; font-weight: 700; margin: 28px 0 12px; color: var(--accent3);
+  }
+
+  h4 {
+    font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: var(--text2);
+    text-transform: uppercase; letter-spacing: .06em;
+  }
+
+  p { color: var(--text2); margin-bottom: 14px; line-height: 1.8; }
+
+  /* ─── FLOW STEPS ─── */
+  .flow-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 20px 0;
+  }
+
+  .flow-step {
+    display: flex; align-items: center; gap: 16px;
+    position: relative;
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 19px; top: 44px;
+    width: 2px; height: calc(100% + 2px);
+    background: linear-gradient(to bottom, var(--accent), var(--purple));
+    opacity: .3;
+  }
+
+  .step-num {
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; position: relative; z-index: 1;
+  }
+
+  .step-body {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 8px;
+    transition: border-color .2s;
+  }
+
+  .step-body:hover { border-color: var(--border2); }
+
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 13px; color: var(--text3); line-height: 1.5; }
+  .step-arrow { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* ─── ROLE CARDS ─── */
+  .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+
+  .role-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: border-color .2s;
+  }
+
+  .role-card:hover { border-color: var(--border2); }
+
+  .role-card-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  }
+
+  .role-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+
+  .role-name { font-size: 16px; font-weight: 800; }
+  .role-tag { font-size: 11px; color: var(--text3); }
+
+  .role-list { list-style: none; }
+  .role-list li {
+    font-size: 13px; color: var(--text2); padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .role-list li:last-child { border-bottom: none; }
+  .role-list li::before { content: '—'; color: var(--text3); font-size: 11px; }
+
+  /* ─── PAGE CARDS ─── */
+  .page-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin: 16px 0;
+    transition: border-color .2s;
+  }
+
+  .page-card:hover { border-color: var(--border2); }
+
+  .page-card-header {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;
+  }
+
+  .page-icon {
+    width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+
+  .page-title { font-size: 17px; font-weight: 800; margin-bottom: 2px; }
+  .page-route {
+    font-family: 'Courier New', monospace; font-size: 12px;
+    color: var(--green2); background: rgba(16,185,129,.1);
+    border: 1px solid rgba(16,185,129,.2); border-radius: 6px;
+    padding: 2px 8px; display: inline-block;
+  }
+
+  /* ─── API BLOCK ─── */
+  .api-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .api-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,.03);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .method {
+    font-weight: 800; font-size: 11px; padding: 2px 7px; border-radius: 4px;
+    letter-spacing: .06em;
+  }
+
+  .method.get { background: rgba(16,185,129,.2); color: var(--green2); }
+  .method.post { background: rgba(59,130,246,.2); color: var(--accent2); }
+  .method.patch { background: rgba(245,158,11,.2); color: var(--amber2); }
+  .method.delete { background: rgba(239,68,68,.2); color: var(--red2); }
+
+  .api-url { color: var(--text2); font-size: 13px; direction: ltr; }
+  .api-body { padding: 14px; font-size: 12px; color: var(--text2); overflow-x: auto; direction: ltr; }
+  .api-body pre { direction: ltr; text-align: left; }
+
+  /* ─── CODE BLOCK ─── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    direction: ltr;
+  }
+
+  .code-block pre {
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    color: var(--text2);
+    text-align: left;
+    line-height: 1.7;
+  }
+
+  .code-block .kw { color: #c084fc; }
+  .code-block .str { color: #86efac; }
+  .code-block .num { color: #fb923c; }
+  .code-block .cm { color: #475569; font-style: italic; }
+  .code-block .fn { color: #60a5fa; }
+  .code-block .type { color: #f472b6; }
+
+  /* ─── STATUS BADGES ─── */
+  .status-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+
+  .status-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 14px;
+  }
+
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .status-label { font-size: 12px; font-weight: 600; font-family: monospace; }
+  .status-desc { font-size: 12px; color: var(--text3); }
+
+  /* ─── INFO BOXES ─── */
+  .info-box {
+    border-radius: 10px; padding: 16px 18px; margin: 14px 0;
+    border-right: 3px solid;
+  }
+
+  .info-box.blue { background: rgba(59,130,246,.08); border-color: var(--accent); }
+  .info-box.green { background: rgba(16,185,129,.08); border-color: var(--green); }
+  .info-box.amber { background: rgba(245,158,11,.08); border-color: var(--amber); }
+  .info-box.red { background: rgba(239,68,68,.08); border-color: var(--red); }
+  .info-box.purple { background: rgba(139,92,246,.08); border-color: var(--purple); }
+
+  .info-box-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .info-box p { margin: 0; font-size: 13px; }
+
+  /* ─── FOLDER TREE ─── */
+  .tree {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 2;
+    direction: ltr;
+    overflow-x: auto;
+  }
+
+  .tree .dir { color: var(--accent2); font-weight: 700; }
+  .tree .file { color: var(--text2); }
+  .tree .ext-ts { color: var(--green2); }
+  .tree .ext-tsx { color: var(--cyan); }
+  .tree .branch { color: var(--text3); }
+  .tree .comment { color: #475569; font-style: italic; }
+
+  .tree pre {
+    margin: 0;
+    white-space: pre;
+    direction: ltr;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+  }
+
+
+  /* ─── TECH STACK ─── */
+  .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+
+  .tech-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color .2s, transform .2s;
+    cursor: default;
+  }
+
+  .tech-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+  .tech-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+  .tech-purpose { font-size: 12px; color: var(--text3); line-height: 1.5; }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+  .tech-tag {
+    font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px;
+  }
+
+  /* ─── PHASE TIMELINE ─── */
+  .phase-list { margin: 16px 0; }
+
+  .phase-item {
+    display: flex; gap: 16px; margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    transition: border-color .2s;
+  }
+
+  .phase-item:hover { border-color: var(--border2); }
+
+  .phase-num {
+    font-size: 11px; font-weight: 800; letter-spacing: .06em;
+    min-width: 70px; padding: 3px 0; color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  .phase-content { flex: 1; }
+  .phase-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .phase-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .phase-chip {
+    font-family: monospace; font-size: 11px; font-weight: 600;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 8px; color: var(--text2);
+  }
+
+  /* ─── TABLE ─── */
+  .data-table {
+    width: 100%; border-collapse: collapse; margin: 14px 0;
+    font-size: 13px;
+  }
+
+  .data-table th {
+    background: var(--surface2); padding: 10px 14px;
+    font-weight: 700; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--text3);
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    color: var(--text2);
+  }
+
+  .data-table tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ─── MVP CHECKLIST ─── */
+  .checklist { list-style: none; margin: 12px 0; }
+
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 7px 0; font-size: 13px; color: var(--text2);
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .check-icon {
+    width: 18px; height: 18px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; flex-shrink: 0; margin-top: 2px;
+  }
+
+  .check-icon.done { background: rgba(16,185,129,.2); color: var(--green2); }
+  .check-icon.needed { background: rgba(245,158,11,.2); color: var(--amber2); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1000px) {
+    .sidebar { transform: translateX(100%); }
+    .main { margin-right: 0; }
+    .hero { padding: 40px 24px; }
+    .content { padding: 32px 24px; }
+    .role-grid { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR ─── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🚌</div>
+    <div>
+      <div class="sidebar-logo-text">Bus Ticket System</div>
+      <div class="sidebar-logo-sub">مستندات فرانت‌اند</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">بخش اول — فلو پروژه</div>
+        <a class="nav-item active" href="#s-overview"><span class="dot"></span>معرفی و هدف</a>
+    <a class="nav-item" href="#s-system-flow"><span class="dot"></span>فلو کلی سیستم</a>
+    <a class="nav-item" href="#s-roles"><span class="dot"></span>نقش‌ها</a>
+    <a class="nav-item" href="#s-public"><span class="dot"></span>صفحات عمومی</a>
+    <a class="nav-item" href="#s-booking-flow"><span class="dot"></span>فلو رزرو</a>
+    <a class="nav-item" href="#s-payment"><span class="dot"></span>پرداخت</a>
+    <a class="nav-item" href="#s-ticket"><span class="dot"></span>بلیط</a>
+    <a class="nav-item" href="#s-user-panel"><span class="dot"></span>پنل کاربر</a>
+    <a class="nav-item" href="#s-owner-panel"><span class="dot"></span>پنل مالک</a>
+    <a class="nav-item" href="#s-auth"><span class="dot"></span>احراز هویت</a>
+    <a class="nav-item" href="#s-protected"><span class="dot"></span>Protected Routes</a>
+    <a class="nav-item" href="#s-statuses"><span class="dot"></span>وضعیت‌های Booking</a>
+    <a class="nav-item" href="#s-mvp"><span class="dot"></span>MVP</a>
+    <a class="nav-item" href="#s-dev-phases"><span class="dot"></span>ترتیب توسعه</a>
+    <a class="nav-item" href="#s-pending"><span class="dot"></span>Backend Confirmed</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">بخش دوم — معماری فرانت</div>
+    <a class="nav-item" href="#a-stack"><span class="dot"></span>Stack نهایی</a>
+    <a class="nav-item" href="#a-why"><span class="dot"></span>دلیل انتخاب</a>
+    <a class="nav-item" href="#a-install"><span class="dot"></span>نصب پروژه</a>
+    <a class="nav-item" href="#a-structure"><span class="dot"></span>ساختار فولدرها</a>
+    <a class="nav-item" href="#a-components"><span class="dot"></span>Components</a>
+    <a class="nav-item" href="#a-features"><span class="dot"></span>Features</a>
+    <a class="nav-item" href="#a-services"><span class="dot"></span>Services</a>
+    <a class="nav-item" href="#a-types"><span class="dot"></span>Types</a>
+    <a class="nav-item" href="#a-store"><span class="dot"></span>Store</a>
+    <a class="nav-item" href="#a-schemas"><span class="dot"></span>Schemas</a>
+    <a class="nav-item" href="#a-constants"><span class="dot"></span>Constants</a>
+    <a class="nav-item" href="#a-hooks"><span class="dot"></span>Hooks &amp; Patterns</a>
+    <a class="nav-item" href="#a-api-ref"><span class="dot"></span>API Reference</a>
+    <a class="nav-item" href="#a-golden-rule"><span class="dot"></span>قانون طلایی</a>
+  </div>
+</nav>
+
+<!-- ─── MAIN ─── -->
+<main class="main">
+
+  <!-- ─── HERO ─── -->
+  <div class="hero">
+    <div class="hero-tag">🚌 Bus Ticket Frontend — سامانه رزرو بلیط</div>
+    <h1>مستندات کامل<br>فرانت‌اند پروژه</h1>
+    <p class="hero-sub">راهنمای جامع فلو کاربری، معماری، تکنولوژی‌ها، APIها و ساختار کد پروژه رزرو بلیط اتوبوس (شبیه Safar724)</p>
+    <div class="hero-chips">
+      <span class="chip">⚡ Next.js 15</span>
+      <span class="chip">🔷 TypeScript</span>
+      <span class="chip">🎨 TailwindCSS</span>
+      <span class="chip">🔄 TanStack Query</span>
+      <span class="chip">🐻 Zustand</span>
+      <span class="chip">✅ Zod + RHF</span>
+      <span class="chip">🔐 JWT Auth</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════
+         PART 1 — PROJECT FLOW
+    ══════════════════════════════════════════ -->
+    <div class="part-divider">
+      <div class="part-number blue">①</div>
+      <div>
+        <div class="part-title">فلو کامل پروژه</div>
+        <div class="part-desc">روند کاربری، نقش‌ها، صفحات، APIها و وضعیت‌ها</div>
+      </div>
+    </div>
+
+    <h2 id="s-overview"><span class="h-icon" style="background:rgba(59,130,246,.15)">🎯</span>هدف پروژه</h2>
+    <p>ساخت فرانت‌اند یک سامانه رزرو بلیط اتوبوس شبیه <strong>Safar724</strong> با دو نقش کاربری اصلی: کاربر عادی و مالک شرکت اتوبوسرانی.</p>
+
+    <div class="role-grid">
+      <div class="role-card">
+        <div class="role-card-header">
+          <div class="role-icon" style="background:rgba(59,130,246,.15)">👤</div>
+          <div>
+            <div class="role-name">User</div>
+            <div class="role-tag">کاربر عادی</div>
+          </div>
+        </div>
+        <ul class="role-list">
+          <li>جستجوی سفر</li>
+          <li>مشاهده جزئیات سفر</li>
+          <li>انتخاب صندلی</li>
+          <li>وارد کردن اطلاعات مسافر</li>
+          <li>ایجاد رزرو و پرداخت</li>
+          <li>مشاهده بلیط‌ها</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-card-header">
+          <div class="role-icon" style="background:rgba(139,92,246,.15)">🏢</div>
+          <div>
+            <div class="role-name">Owner</div>
+            <div class="role-tag">مالک شرکت اتوبوسرانی</div>
+          </div>
+        </div>
+        <ul class="role-list">
+          <li>مدیریت اتوبوس‌های شرکت</li>
+          <li>ایجاد، ویرایش و حذف سفرها</li>
+          <li>مشاهده رزروهای شرکت</li>
+          <li>مشاهده آمار رزروها</li>
+          <li>لغو رزرو pending شرکت</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ─── SYSTEM FLOW ─── -->
+    <h2 id="s-system-flow"><span class="h-icon" style="background:rgba(16,185,129,.15)">🔄</span>فلو کلی سیستم</h2>
+
+    <div class="flow-wrapper">
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">1</div>
+        <div class="step-body">
+          <div class="step-title">ورود کاربر به سایت</div>
+          <div class="step-desc">صفحه اصلی — مشاهده فرم جستجوی سفر</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(16,185,129,.2);color:#34d399">2</div>
+        <div class="step-body">
+          <div class="step-title">جستجوی سفر</div>
+          <div class="step-desc">انتخاب مبدا، مقصد و تاریخ — ارسال به صفحه نتایج</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/search?origin=Tehran&destination=Shiraz&date=...</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(245,158,11,.2);color:#fcd34d">3</div>
+        <div class="step-body">
+          <div class="step-title">مشاهده لیست سفرها</div>
+          <div class="step-desc">نمایش نتایج جستجو با مشخصات هر سفر</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/search</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(139,92,246,.2);color:#a78bfa">4</div>
+        <div class="step-body">
+          <div class="step-title">مشاهده جزئیات سفر</div>
+          <div class="step-desc">اطلاعات کامل: مبدا، مقصد، قیمت، نوع اتوبوس</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/trip/[id]</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(6,182,212,.2);color:#67e8f9">5</div>
+        <div class="step-body">
+          <div class="step-title">انتخاب صندلی</div>
+          <div class="step-desc">نمایش چیدمان اتوبوس — انتخاب یک یا چند صندلی</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/booking/[tripId]</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(239,68,68,.2);color:#f87171">6</div>
+        <div class="step-body">
+          <div class="step-title">ثبت اطلاعات مسافر</div>
+          <div class="step-desc">فرم مسافر به تعداد صندلی انتخاب‌شده</div>
+          <div class="step-arrow">→ همان صفحه booking</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">7</div>
+        <div class="step-body">
+          <div class="step-title">ایجاد Booking</div>
+          <div class="step-desc">POST /api/bookings/ — دریافت booking_id و تایمر ۱۰ دقیقه‌ای</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/payment/[bookingId]</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(16,185,129,.2);color:#34d399">8</div>
+        <div class="step-body">
+          <div class="step-title">پرداخت</div>
+          <div class="step-desc">نمایش مبلغ، تایمر انقضا و پرداخت از طریق fake_gateway</div>
+          <div class="step-arrow">→ <code style="font-family:monospace;font-size:12px;color:var(--green2)">/tickets/[id]</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num" style="background:rgba(245,158,11,.2);color:#fcd34d">9</div>
+        <div class="step-body">
+          <div class="step-title">صدور Ticket</div>
+          <div class="step-desc">بعد از پرداخت موفق — هر مسافر یک ticket دریافت می‌کند</div>
+          <div class="step-arrow">→ نمایش نهایی بلیط</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PUBLIC PAGES ─── -->
+    <h2 id="s-public"><span class="h-icon" style="background:rgba(16,185,129,.15)">🌐</span>صفحات عمومی</h2>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(59,130,246,.15)">🏠</div>
+        <div>
+          <div class="page-title">صفحه اصلی</div>
+          <code class="page-route">/</code>
+        </div>
+      </div>
+      <p>نمایش فرم جستجوی سفر با سه فیلد: مبدا، مقصد و تاریخ حرکت.</p>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">FORM</span><span class="api-url">Submit → /search?origin=Tehran&destination=Shiraz&date=2026-06-15</span></div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(16,185,129,.15)">🔍</div>
+        <div>
+          <div class="page-title">صفحه نتایج جستجو</div>
+          <code class="page-route">/search</code>
+        </div>
+      </div>
+      <p>خواندن query string از URL و نمایش لیست سفرهای منطبق.</p>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/trips/company/trips/search/?origin=Tehran&destination=Shiraz&date=2026-06-15</span></div>
+      </div>
+      <h4>اطلاعات نمایشی</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="chip">شهر مبدا</span><span class="chip">شهر مقصد</span>
+        <span class="chip">ساعت حرکت / رسیدن</span><span class="chip">قیمت</span>
+        <span class="chip">نوع اتوبوس</span><span class="chip">صندلی خالی</span>
+        <span class="chip">نام شرکت، اگر در پاسخ API موجود باشد</span>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(139,92,246,.15)">🚌</div>
+        <div>
+          <div class="page-title">صفحه جزئیات سفر</div>
+          <code class="page-route">/trip/[id]</code>
+        </div>
+      </div>
+      <p>دریافت اطلاعات کامل سفر از بک‌اند و نمایش جزئیات با دکمه ادامه.</p>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/trips/company/trips/{id}/</span></div>
+      </div>
+      <div class="info-box blue" style="margin-top:12px">
+        <div class="info-box-title">دکمه انتقال</div>
+        <p>«ادامه و انتخاب صندلی» → redirect به <code style="font-family:monospace">/booking/{tripId}</code></p>
+      </div>
+    </div>
+
+    <!-- ─── BOOKING FLOW ─── -->
+    <h2 id="s-booking-flow"><span class="h-icon" style="background:rgba(245,158,11,.15)">🎫</span>فلو رزرو کاربر</h2>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(245,158,11,.15)">💺</div>
+        <div>
+          <div class="page-title">صفحه انتخاب صندلی و اطلاعات مسافر</div>
+          <code class="page-route">/booking/[tripId]</code>
+        </div>
+      </div>
+
+      <p>ترکیب نمایش صندلی‌ها و فرم مسافرین در یک صفحه. وضعیت صندلی‌ها باید از endpoint اختصاصی صندلی خوانده شود و بعد از خطای رزرو، دوباره refetch شود.</p>
+
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/trips/company/trips/{id}/seats/</span></div>
+        <div class="api-body">
+<pre>[
+  { "id": 1, "number": 1, "status": "available" },
+  { "id": 2, "number": 2, "status": "reserved" }
+]</pre>
+        </div>
+      </div>
+
+      <h3>وضعیت‌های صندلی</h3>
+      <div class="status-grid">
+        <div class="status-badge"><div class="status-dot" style="background:var(--green)"></div><span class="status-label">available</span><span class="status-desc">قابل انتخاب</span></div>
+        <div class="status-badge"><div class="status-dot" style="background:var(--red)"></div><span class="status-label">reserved</span><span class="status-desc">رزرو شده</span></div>
+        <div class="status-badge"><div class="status-dot" style="background:var(--text3)"></div><span class="status-label">unavailable</span><span class="status-desc">غیرقابل انتخاب</span></div>
+        <div class="status-badge"><div class="status-dot" style="background:var(--accent)"></div><span class="status-label">selected</span><span class="status-desc">انتخاب‌شده توسط کاربر</span></div>
+      </div>
+
+      <h3>فرم هر مسافر</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+        <span class="chip">first_name</span><span class="chip">last_name</span>
+        <span class="chip">national_code</span><span class="chip">phone</span>
+      </div>
+
+      <h3>API ایجاد Booking</h3>
+      <div class="api-block">
+        <div class="api-header"><span class="method post">POST</span><span class="api-url">/api/bookings/</span></div>
+        <div class="api-body">
+<pre>{
+  "trip": 12,
+  "seat_ids": [1, 3],
+  "passengers": [
+    { "first_name": "Ali", "last_name": "Ahmadi",
+      "national_code": "1234567890", "phone": "09123456789" },
+    { "first_name": "Reza", "last_name": "Ahmadi",
+      "national_code": "1234567891", "phone": "09123456788" }
+  ]
+}</pre>
+        </div>
+      </div>
+
+      <h3>Response</h3>
+      <div class="api-block">
+        <div class="api-body">
+<pre>{
+  "id": 55,
+  "user": 5,
+  "expires_at": "2026-05-30T08:10:00Z",  <span style="color:#475569">// 10 دقیقه</span>
+  "status": "pending_payment",
+  "total_price": "900000.00",
+  "trip": 12
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAYMENT ─── -->
+    <h2 id="s-payment"><span class="h-icon" style="background:rgba(16,185,129,.15)">💳</span>صفحه پرداخت</h2>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(16,185,129,.15)">💳</div>
+        <div>
+          <div class="page-title">صفحه پرداخت</div>
+          <code class="page-route">/payment/[bookingId]</code>
+        </div>
+      </div>
+      <p>نمایش مبلغ، تایمر انقضا و دریافت ticket_ids پس از پرداخت موفق.</p>
+      <div class="api-block">
+        <div class="api-header"><span class="method post">POST</span><span class="api-url">/api/payments/pay/</span></div>
+        <div class="api-body">
+<pre>{
+  "booking_id": 55,
+  "method": "fake_gateway"
+}</pre>
+        </div>
+      </div>
+      <h3>Response</h3>
+      <div class="api-block">
+        <div class="api-body">
+<pre>{
+  "payment": {
+    "id": 12, "booking": 55,
+    "amount": "900000.00",
+    "tracking_code": "aB3dE5fG7h...",
+    "status": "success",
+    "paid_at": "2026-05-30T10:15:32Z"
+  },
+  "ticket_ids": [98, 99]
+}</pre>
+        </div>
+      </div>
+      <div class="info-box green" style="margin-top:12px">
+        <div class="info-box-title">بعد از پرداخت موفق</div>
+        <p>اگر یک بلیط → <code style="font-family:monospace">/tickets/98</code> | اگر چند بلیط → <code style="font-family:monospace">/user/tickets</code></p>
+      </div>
+    </div>
+
+    <!-- ─── TICKET ─── -->
+    <h2 id="s-ticket"><span class="h-icon" style="background:rgba(6,182,212,.15)">🎟️</span>صفحه نمایش بلیط</h2>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(6,182,212,.15)">🎟️</div>
+        <div>
+          <div class="page-title">صفحه بلیط</div>
+          <code class="page-route">/tickets/[id]</code>
+        </div>
+      </div>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/tickets/{id}/</span></div>
+        <div class="api-body">
+<pre>{
+  "id": 98, "booking_id": 55,
+  "passenger": {
+    "first_name": "Ali", "last_name": "Ahmadi",
+    "national_code": "1234567890"
+  },
+  "trip": {
+    "id": 12,
+    "origin_city": "Tehran",
+    "destination_city": "Shiraz",
+    "departure": "2026-06-15T08:00:00Z",
+    "arrival": "2026-06-15T12:00:00Z"
+  },
+  "seat_number": 1,
+  "ticket_code": "aB3dE5fG7h...",
+  "issued_at": "2026-05-30T10:15:32Z"
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── USER PANEL ─── -->
+    <h2 id="s-user-panel"><span class="h-icon" style="background:rgba(59,130,246,.15)">👤</span>پنل کاربر</h2>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(59,130,246,.15)">📊</div>
+        <div>
+          <div class="page-title">داشبورد کاربر</div>
+          <code class="page-route">/user/dashboard</code>
+        </div>
+      </div>
+      <p>خلاصه اطلاعات کاربر: تعداد رزروها، بلیط‌ها، رزروهای pending و آخرین بلیط‌ها.</p>
+    </div>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(245,158,11,.15)">📋</div>
+        <div>
+          <div class="page-title">رزروهای من</div>
+          <code class="page-route">/user/bookings</code>
+        </div>
+      </div>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/bookings/?status=pending_payment&page=1&page_size=10</span></div>
+      </div>
+      <div class="api-block" style="margin-top:8px">
+        <div class="api-header"><span class="method patch">PATCH</span><span class="api-url">/api/bookings/{id}/cancel/</span></div>
+      </div>
+    </div>
+
+    <div class="page-card">
+      <div class="page-card-header">
+        <div class="page-icon" style="background:rgba(16,185,129,.15)">🎫</div>
+        <div>
+          <div class="page-title">بلیط‌های من</div>
+          <code class="page-route">/user/tickets</code>
+        </div>
+      </div>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/tickets/</span></div>
+      </div>
+    </div>
+
+    <!-- ─── OWNER PANEL ─── -->
+    <h2 id="s-owner-panel"><span class="h-icon" style="background:rgba(139,92,246,.15)">🏢</span>پنل مالک شرکت</h2>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>صفحه</th><th>مسیر</th><th>API اصلی</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>داشبورد</td><td><code style="font-family:monospace;color:var(--green2)">/owner/dashboard</code></td><td><code style="font-family:monospace;font-size:11px">GET /api/bookings/stats/</code></td></tr>
+        <tr><td>مدیریت اتوبوس‌ها</td><td><code style="font-family:monospace;color:var(--green2)">/owner/buses</code></td><td><code style="font-family:monospace;font-size:11px">CRUD /api/companies/company/buses/</code></td></tr>
+        <tr><td>مدیریت سفرها</td><td><code style="font-family:monospace;color:var(--green2)">/owner/trips</code></td><td><code style="font-family:monospace;font-size:11px">CRUD /api/trips/company/trips/</code></td></tr>
+        <tr><td>رزروهای شرکت</td><td><code style="font-family:monospace;color:var(--green2)">/owner/bookings</code></td><td><code style="font-family:monospace;font-size:11px">GET /api/bookings/</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ─── AUTH ─── -->
+    <h2 id="s-auth"><span class="h-icon" style="background:rgba(239,68,68,.15)">🔐</span>احراز هویت</h2>
+
+    <div class="info-box green" style="margin-top:16px">
+      <div class="info-box-title">Token Storage Strategy — Cookie Based</div>
+      <p>
+        طبق PDFهای بک‌اند، Login توکن‌ها را داخل JSON Response برمی‌گرداند و بک‌اند خودش Set-Cookie انجام نمی‌دهد.
+        بنابراین فرانت بعد از Login باید <code style="font-family:monospace">access_token</code> و
+        <code style="font-family:monospace">refresh_token</code> را داخل Cookie ذخیره کند.
+        در این پروژه توکن‌ها نباید داخل <code style="font-family:monospace">localStorage</code> یا
+        <code style="font-family:monospace">sessionStorage</code> ذخیره شوند.
+      </p>
+    </div>
+
+    <div class="code-block">
+<pre><span class="cm">// login success</span>
+Cookies.set(<span class="str">"access_token"</span>, data.access);
+Cookies.set(<span class="str">"refresh_token"</span>, data.refresh);
+
+<span class="cm">// api.ts</span>
+<span class="kw">const</span> token = Cookies.get(<span class="str">"access_token"</span>);
+<span class="kw">if</span> (token) {
+  config.headers.Authorization = <span class="str">`Bearer ${token}`</span>;
+}</pre>
+    </div>
+
+    <div class="info-box red" style="margin-top:12px">
+      <div class="info-box-title">قانون مهم Auth</div>
+      <p>
+        Do not use localStorage for tokens. Token storage must be Cookie-based.
+      </p>
+    </div>
+
+
+    <div class="page-card">
+      <h3>ثبت‌نام User</h3>
+      <div class="api-block">
+        <div class="api-header"><span class="method post">POST</span><span class="api-url">/api/accounts/user/register/</span></div>
+        <div class="api-body"><pre>{ "first_name", "last_name", "phone", "email", "password" }</pre></div>
+      </div>
+
+      <h3>ثبت‌نام Owner</h3>
+      <div class="api-block">
+        <div class="api-header"><span class="method post">POST</span><span class="api-url">/api/accounts/owner/register/</span></div>
+        <div class="api-body"><pre>{ "first_name", "last_name", "phone", "email", "password", "company_name" }</pre></div>
+      </div>
+
+      <h3>Login</h3>
+      <div class="api-block">
+        <div class="api-header"><span class="method post">POST</span><span class="api-url">/api/accounts/account/login</span></div>
+        <div class="api-body">
+<pre>{
+  "access": "jwt-access-token",
+  "refresh": "jwt-refresh-token",
+  "account": { "id": 5, "first_name": "Ali", "role": "user" }
+}</pre>
+        </div>
+      </div>
+
+      <h3>Refresh Token</h3>
+      <div class="api-block">
+        <div class="api-header"><span class="method post">POST</span><span class="api-url">/api/accounts/refresh-token/</span></div>
+      </div>
+
+      <div class="info-box blue" style="margin-top:16px">
+        <div class="info-box-title">Redirect بر اساس Role</div>
+        <p><code style="font-family:monospace">role = user</code> → <code style="font-family:monospace">/user/dashboard</code> | <code style="font-family:monospace">role = owner</code> → <code style="font-family:monospace">/owner/dashboard</code></p>
+      </div>
+    </div>
+
+    <!-- ─── PROTECTED ─── -->
+    <h2 id="s-protected"><span class="h-icon" style="background:rgba(239,68,68,.15)">🛡️</span>Protected Routes</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+      <div class="info-box blue">
+        <div class="info-box-title">مسیرهای User</div>
+        <p><code style="font-family:monospace">/user/*</code> | <code style="font-family:monospace">/booking/*</code> | <code style="font-family:monospace">/payment/*</code><br><br>شرط: لاگین + <code style="font-family:monospace">role = user</code></p>
+      </div>
+      <div class="info-box purple">
+        <div class="info-box-title">مسیرهای Owner</div>
+        <p><code style="font-family:monospace">/owner/*</code><br><br>شرط: لاگین + <code style="font-family:monospace">role = owner</code></p>
+      </div>
+    </div>
+
+    <!-- ─── STATUSES ─── -->
+    <h2 id="s-statuses"><span class="h-icon" style="background:rgba(245,158,11,.15)">📌</span>وضعیت‌های Booking</h2>
+
+    <div class="status-grid">
+      <div class="status-badge"><div class="status-dot" style="background:var(--amber)"></div><span class="status-label">pending_payment</span><span class="status-desc">اعتبار ۱۰ دقیقه</span></div>
+      <div class="status-badge"><div class="status-dot" style="background:var(--green)"></div><span class="status-label">paid</span><span class="status-desc">پرداخت موفق</span></div>
+      <div class="status-badge"><div class="status-dot" style="background:var(--red)"></div><span class="status-label">canceled</span><span class="status-desc">لغو شده</span></div>
+      <div class="status-badge"><div class="status-dot" style="background:var(--text3)"></div><span class="status-label">expired</span><span class="status-desc">منقضی شده</span></div>
+    </div>
+
+    <div class="info-box amber" style="margin-top:14px">
+      <div class="info-box-title">⚠️ قانون‌های مهم</div>
+      <p>booking بعد از ۱۰ دقیقه expire می‌شود | booking paid قابل cancel نیست | فقط user می‌تواند booking ایجاد کند | صندلی pending_payment برای همان trip قفل است</p>
+    </div>
+
+    <!-- ─── MVP ─── -->
+    <h2 id="s-mvp"><span class="h-icon" style="background:rgba(16,185,129,.15)">✅</span>MVP — چه چیزهایی باید باشد؟</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+      <div class="role-card">
+        <div class="role-card-header">
+          <div class="role-icon" style="background:rgba(16,185,129,.15)">🌐</div>
+          <div><div class="role-name" style="font-size:14px">Public + Auth</div></div>
+        </div>
+        <ul class="role-list">
+          <li>صفحه اصلی و جستجو</li>
+          <li>لیست و جزئیات سفر</li>
+          <li>Login / Register User</li>
+          <li>Register Owner / Logout</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-card-header">
+          <div class="role-icon" style="background:rgba(59,130,246,.15)">👤</div>
+          <div><div class="role-name" style="font-size:14px">User Flow</div></div>
+        </div>
+        <ul class="role-list">
+          <li>انتخاب صندلی و ثبت مسافر</li>
+          <li>ایجاد رزرو و پرداخت</li>
+          <li>مشاهده بلیط و رزروها</li>
+          <li>لغو رزرو pending</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-card-header">
+          <div class="role-icon" style="background:rgba(139,92,246,.15)">🏢</div>
+          <div><div class="role-name" style="font-size:14px">Owner Panel</div></div>
+        </div>
+        <ul class="role-list">
+          <li>مدیریت اتوبوس‌ها (CRUD)</li>
+          <li>مدیریت سفرها (CRUD)</li>
+          <li>مشاهده رزروهای شرکت</li>
+          <li>مشاهده آمار رزروها</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-card-header">
+          <div class="role-icon" style="background:rgba(239,68,68,.15)">🚫</div>
+          <div><div class="role-name" style="font-size:14px">MVP نیاز ندارد</div></div>
+        </div>
+        <ul class="role-list">
+          <li>درگاه واقعی پرداخت</li>
+          <li>Forgot Password</li>
+          <li>ارسال SMS / ایمیل تایید</li>
+          <li>پنل ادمین اصلی</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ─── DEV PHASES ─── -->
+    <h2 id="s-dev-phases"><span class="h-icon" style="background:rgba(6,182,212,.15)">🗓️</span>ترتیب توسعه</h2>
+
+    <div class="phase-list">
+      <div class="phase-item">
+        <div class="phase-num" style="color:var(--accent2)">Phase 1</div>
+        <div class="phase-content">
+          <div class="phase-title">Setup</div>
+          <div class="phase-items">
+            <span class="phase-chip">Next.js</span>
+            <span class="phase-chip">Tailwind</span>
+            <span class="phase-chip">shadcn/ui</span>
+            <span class="phase-chip">Axios</span>
+            <span class="phase-chip">React Query</span>
+            <span class="phase-chip">Zustand</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num" style="color:var(--green2)">Phase 2</div>
+        <div class="phase-content">
+          <div class="phase-title">Auth</div>
+          <div class="phase-items">
+            <span class="phase-chip">Login</span>
+            <span class="phase-chip">Register User</span>
+            <span class="phase-chip">Register Owner</span>
+            <span class="phase-chip">Logout</span>
+            <span class="phase-chip">Protected Routes</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num" style="color:var(--amber2)">Phase 3</div>
+        <div class="phase-content">
+          <div class="phase-title">Public Trip Flow</div>
+          <div class="phase-items">
+            <span class="phase-chip">Home Search</span>
+            <span class="phase-chip">Search Results</span>
+            <span class="phase-chip">Trip Details</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num" style="color:var(--purple2)">Phase 4</div>
+        <div class="phase-content">
+          <div class="phase-title">Booking Flow</div>
+          <div class="phase-items">
+            <span class="phase-chip">Seat Selection</span>
+            <span class="phase-chip">Passenger Form</span>
+            <span class="phase-chip">Create Booking</span>
+            <span class="phase-chip">Payment</span>
+            <span class="phase-chip">Ticket Display</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num" style="color:var(--cyan)">Phase 5</div>
+        <div class="phase-content">
+          <div class="phase-title">User Panel</div>
+          <div class="phase-items">
+            <span class="phase-chip">Dashboard</span>
+            <span class="phase-chip">My Bookings</span>
+            <span class="phase-chip">My Tickets</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num" style="color:var(--red2)">Phase 6</div>
+        <div class="phase-content">
+          <div class="phase-title">Owner Panel</div>
+          <div class="phase-items">
+            <span class="phase-chip">Dashboard</span>
+            <span class="phase-chip">Buses CRUD</span>
+            <span class="phase-chip">Trips CRUD</span>
+            <span class="phase-chip">Company Bookings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- ─── BACKEND CONFIRMED ─── -->
+    <h2 id="s-pending"><span class="h-icon" style="background:rgba(16,185,129,.15)">✅</span>Backend Confirmed APIs</h2>
+    <p>ابهام‌های قبلی بک‌اند برای MVP حل شده‌اند و موارد زیر تأیید شده‌اند:</p>
+
+    <div class="info-box green">
+      <div class="info-box-title">1. API دریافت صندلی‌های سفر</div>
+      <p>برای صفحه انتخاب صندلی، بک‌اند این endpoint را تأیید کرده است:</p>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/trips/company/trips/{id}/seats/</span></div>
+        <div class="api-body">
+<pre>[
+  {
+    "id": 1,
+    "number": 1,
+    "status": "available"
+  },
+  {
+    "id": 2,
+    "number": 2,
+    "status": "reserved"
+  }
+]</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box green">
+      <div class="info-box-title">2. منطق قفل شدن صندلی در pending_payment</div>
+      <p>
+        بک‌اند تأیید کرده است که هنگام ساخت Booking، عملیات به شکل atomic انجام می‌شود.
+        اگر User A صندلی ۵ را انتخاب کند و Booking با وضعیت
+        <code style="font-family:monospace">pending_payment</code>
+        ساخته شود، همان صندلی برای همان Trip قفل می‌شود.
+      </p>
+      <div class="code-block">
+<pre>User A
+Seat 5
+Booking Status = pending_payment
+
+↓
+
+Seat 5 is locked
+
+↓
+
+User B cannot book Seat 5 for the same Trip</pre>
+      </div>
+      <p>در نتیجه رزرو تکراری یک صندلی برای یک سفر امکان‌پذیر نیست.</p>
+    </div>
+
+    <div class="info-box green">
+      <div class="info-box-title">3. API دریافت اطلاعات کاربر لاگین‌شده</div>
+      <p>برای Session Restore، Protected Routes و Role Guard، بک‌اند endpoint زیر را تأیید کرده است:</p>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/accounts/me/</span></div>
+        <div class="api-body"><pre>Authorization: Bearer &lt;jwt_token&gt;</pre></div>
+      </div>
+
+      <h4>Response — Regular User</h4>
+      <div class="api-block">
+        <div class="api-body">
+<pre>{
+  "id": 5,
+  "first_name": "Ali",
+  "last_name": "Ahmadi",
+  "phone": "09123456789",
+  "email": "ali@example.com",
+  "role": "user",
+  "company_name": null
+}</pre>
+        </div>
+      </div>
+
+      <h4>Response — Company Owner</h4>
+      <div class="api-block">
+        <div class="api-body">
+<pre>{
+  "id": 3,
+  "first_name": "Mohammad",
+  "last_name": "Rezaei",
+  "phone": "09987654321",
+  "email": "mohammad@travelco.com",
+  "role": "owner",
+  "company_name": "Pars Travel Co."
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box green">
+      <div class="info-box-title">4. نام شهرها در خروجی Trip</div>
+      <p>بک‌اند تأیید کرده است که خروجی Trip هم ID شهر و هم نام شهر را برمی‌گرداند:</p>
+      <div class="api-block">
+        <div class="api-body">
+<pre>{
+  "id": 12,
+  "origin_city": 1,
+  "origin_city_name": "Tehran",
+  "destination_city": 2,
+  "destination_city_name": "Shiraz"
+}</pre>
+        </div>
+      </div>
+      <p>
+        در کارت سفر و صفحه جزئیات سفر باید از
+        <code style="font-family:monospace">origin_city_name</code>
+        و
+        <code style="font-family:monospace">destination_city_name</code>
+        برای نمایش استفاده شود.
+      </p>
+    </div>
+
+    <div class="info-box blue">
+      <div class="info-box-title">5. Search by City Name و نبود API شهرها</div>
+      <p>
+        برای MVP، کاربر نام شهر را داخل فرم تایپ می‌کند.
+        بنابراین در فرم جستجو نیازی به API لیست شهرها نیست.
+      </p>
+      <div class="api-block">
+        <div class="api-header"><span class="method get">GET</span><span class="api-url">/api/trips/company/trips/search/?origin=Tehran&amp;destination=Shiraz&amp;date=2026-06-15</span></div>
+      </div>
+      <p>Autocomplete یا API شهرها می‌تواند بعداً به عنوان بهبود UX اضافه شود، اما برای MVP بلاکر نیست.</p>
+    </div>
+
+
+    <hr class="divider">
+
+    <!-- ══════════════════════════════════════════
+         PART 2 — FRONTEND ARCHITECTURE
+    ══════════════════════════════════════════ -->
+    <div class="part-divider">
+      <div class="part-number purple">②</div>
+      <div>
+        <div class="part-title">معماری فرانت‌اند</div>
+        <div class="part-desc">تکنولوژی‌ها، فولدربندی، سرویس‌ها، تایپ‌ها و patterns</div>
+      </div>
+    </div>
+
+    <h2 id="a-stack"><span class="h-icon" style="background:rgba(139,92,246,.15)">⚡</span>Stack نهایی پروژه</h2>
+
+    <div class="info-box blue">
+      <div class="info-box-title">Architecture</div>
+      <p>معماری پروژه Feature-Based Modular Architecture همراه با Service Layer Pattern است: صفحه‌ها فقط route و layout را نگه می‌دارند، منطق API در services، state سروری در TanStack Query hooks، فرم‌ها در feature components و تایپ‌ها در types نگهداری می‌شوند.</p>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-name">Next.js</div>
+        <div class="tech-purpose">Routing، App Router، صفحات public و protected</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(59,130,246,.15);color:var(--accent2)">SSR</span><span class="tech-tag" style="background:rgba(59,130,246,.15);color:var(--accent2)">App Router</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">TypeScript</div>
+        <div class="tech-purpose">جلوگیری از خطا در مدل‌های API: User, Trip, Booking...</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(59,130,246,.15);color:var(--accent2)">Type Safety</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">TailwindCSS</div>
+        <div class="tech-purpose">استایل سریع و تمیز</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(16,185,129,.15);color:var(--green2)">Utility</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">shadcn/ui</div>
+        <div class="tech-purpose">Button, Input, Card, Dialog, Table, Tabs, Form, Toast...</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(16,185,129,.15);color:var(--green2)">Components</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">Axios</div>
+        <div class="tech-purpose">Base URL، Authorization Header، Interceptors، Refresh Token</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(245,158,11,.15);color:var(--amber2)">HTTP</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">TanStack Query</div>
+        <div class="tech-purpose">Loading، Error، Cache، Refetch، Mutation، Invalidate</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(245,158,11,.15);color:var(--amber2)">Server State</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">React Hook Form</div>
+        <div class="tech-purpose">Login، Register، Passenger Form، Bus Form، Trip Form</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(139,92,246,.15);color:var(--purple2)">Forms</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">Zod</div>
+        <div class="tech-purpose">Validation فرم‌ها — schema-first type safety</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(139,92,246,.15);color:var(--purple2)">Validation</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">Zustand</div>
+        <div class="tech-purpose">auth، user، selectedSeats، bookingDraft</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(6,182,212,.15);color:var(--cyan)">Client State</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">Sonner</div>
+        <div class="tech-purpose">نمایش toast موفقیت و خطا</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(16,185,129,.15);color:var(--green2)">Toast</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">Lucide React</div>
+        <div class="tech-purpose">آیکون‌ها</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(59,130,246,.15);color:var(--accent2)">Icons</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">Day.js</div>
+        <div class="tech-purpose">کار با تاریخ و ساعت</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(245,158,11,.15);color:var(--amber2)">Date</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">js-cookie</div>
+        <div class="tech-purpose">ذخیره access_token و refresh_token داخل Cookie به جای LocalStorage</div>
+        <div class="tech-tags"><span class="tech-tag" style="background:rgba(239,68,68,.15);color:var(--red2)">Auth Cookies</span></div>
+      </div>
+
+    </div>
+
+    <!-- ─── INSTALL ─── -->
+    <h2 id="a-install"><span class="h-icon" style="background:rgba(16,185,129,.15)">📦</span>نصب پروژه</h2>
+
+    <div class="code-block">
+<pre><span class="cm"># ساخت پروژه Next.js</span>
+npx create-next-app@latest bus-ticket-frontend
+
+<span class="cm"># گزینه‌ها: TypeScript: Yes | Tailwind: Yes | App Router: Yes | src: Yes</span>
+
+<span class="cm"># نصب پکیج‌ها</span>
+npm install axios @tanstack/react-query zustand \
+  react-hook-form zod @hookform/resolvers \
+  sonner lucide-react dayjs
+
+<span class="cm"># نصب shadcn/ui</span>
+npx shadcn@latest init
+npx shadcn@latest add button input card form select \
+  table dialog tabs badge sheet dropdown-menu \
+  separator skeleton</pre>
+    </div>
+
+    <!-- ─── FOLDER STRUCTURE ─── -->
+    
+<h2 id="a-structure"><span class="h-icon" style="background:rgba(59,130,246,.15)">🗂️</span>ساختار فولدرها</h2>
+
+<div class="tree">
+<pre>
+<span class="dir">src/</span>
+├── <span class="dir">app/</span>
+│   ├── <span class="file ext-tsx">layout.tsx</span> <span class="comment"># RTL layout + Providers</span>
+│   ├── <span class="file ext-tsx">providers.tsx</span> <span class="comment"># QueryClient + Toaster</span>
+│   │
+│   ├── <span class="dir">(public)/</span>
+│   │   ├── <span class="file ext-tsx">page.tsx</span> <span class="comment"># صفحه اصلی</span>
+│   │   ├── <span class="dir">search/</span>
+│   │   │   └── <span class="file ext-tsx">page.tsx</span> <span class="comment"># /search</span>
+│   │   └── <span class="dir">trip/[id]/</span>
+│   │       └── <span class="file ext-tsx">page.tsx</span> <span class="comment"># /trip/:id</span>
+│   │
+│   ├── <span class="dir">(auth)/</span>
+│   │   ├── <span class="dir">login/</span>
+│   │   │   └── <span class="file ext-tsx">page.tsx</span> <span class="comment"># /login</span>
+│   │   └── <span class="dir">register/</span>
+│   │       └── <span class="file ext-tsx">page.tsx</span> <span class="comment"># /register</span>
+│   │
+│   ├── <span class="dir">(user)/</span>
+│   │   ├── <span class="dir">user/</span>
+│   │   │   ├── <span class="file ext-tsx">layout.tsx</span> <span class="comment"># User sidebar + auth guard</span>
+│   │   │   ├── <span class="dir">dashboard/</span>
+│   │   │   │   └── <span class="file ext-tsx">page.tsx</span>
+│   │   │   ├── <span class="dir">bookings/</span>
+│   │   │   │   └── <span class="file ext-tsx">page.tsx</span>
+│   │   │   └── <span class="dir">tickets/</span>
+│   │   │       ├── <span class="file ext-tsx">page.tsx</span>
+│   │   │       └── <span class="dir">[id]/</span>
+│   │   │           └── <span class="file ext-tsx">page.tsx</span>
+│   │   │
+│   │   ├── <span class="dir">booking/[tripId]/</span>
+│   │   │   └── <span class="file ext-tsx">page.tsx</span> <span class="comment"># /booking/:tripId</span>
+│   │   └── <span class="dir">payment/[bookingId]/</span>
+│   │       └── <span class="file ext-tsx">page.tsx</span> <span class="comment"># /payment/:bookingId</span>
+│   │
+│   └── <span class="dir">(owner)/</span>
+│       └── <span class="dir">owner/</span>
+│           ├── <span class="file ext-tsx">layout.tsx</span> <span class="comment"># Owner sidebar + role guard</span>
+│           ├── <span class="dir">dashboard/</span>
+│           │   └── <span class="file ext-tsx">page.tsx</span>
+│           ├── <span class="dir">buses/</span>
+│           │   └── <span class="file ext-tsx">page.tsx</span>
+│           ├── <span class="dir">trips/</span>
+│           │   └── <span class="file ext-tsx">page.tsx</span>
+│           └── <span class="dir">bookings/</span>
+│               └── <span class="file ext-tsx">page.tsx</span>
+│
+├── <span class="dir">components/</span>
+│   ├── <span class="dir">ui/</span> <span class="comment"># shadcn components</span>
+│   ├── <span class="dir">layout/</span> <span class="comment"># MainNavbar, Sidebars, Footer</span>
+│   ├── <span class="dir">common/</span> <span class="comment"># Loading, ErrorMessage, StatusBadge</span>
+│   ├── <span class="dir">trip/</span> <span class="comment"># TripCard, TripList, SearchForm</span>
+│   ├── <span class="dir">booking/</span> <span class="comment"># SeatMap, PassengerForm</span>
+│   ├── <span class="dir">ticket/</span> <span class="comment"># TicketCard, TicketDetails</span>
+│   └── <span class="dir">dashboard/</span> <span class="comment"># StatsCard</span>
+│
+├── <span class="dir">features/</span>
+│   ├── <span class="dir">auth/</span> <span class="comment"># LoginForm, RegisterForms, Guards</span>
+│   ├── <span class="dir">trips/</span> <span class="comment"># TripSearch, SearchResults</span>
+│   ├── <span class="dir">booking/</span> <span class="comment"># SeatSelection, PassengerFields</span>
+│   ├── <span class="dir">payment/</span> <span class="comment"># PaymentBox, PaymentResult</span>
+│   ├── <span class="dir">tickets/</span> <span class="comment"># Ticket pages</span>
+│   └── <span class="dir">owner/</span>
+│       ├── <span class="dir">buses/</span> <span class="comment"># BusesTable, BusForm</span>
+│       ├── <span class="dir">trips/</span> <span class="comment"># OwnerTripsTable, TripForm</span>
+│       └── <span class="dir">bookings/</span> <span class="comment"># OwnerBookingsTable</span>
+│
+├── <span class="dir">services/</span>
+│   ├── <span class="file ext-ts">api.ts</span> <span class="comment"># Axios instance + interceptors</span>
+│   ├── <span class="file ext-ts">auth.service.ts</span>
+│   ├── <span class="file ext-ts">trips.service.ts</span>
+│   ├── <span class="file ext-ts">booking.service.ts</span>
+│   ├── <span class="file ext-ts">payment.service.ts</span>
+│   ├── <span class="file ext-ts">tickets.service.ts</span>
+│   └── <span class="file ext-ts">buses.service.ts</span>
+│
+├── <span class="dir">store/</span>
+│   ├── <span class="file ext-ts">auth.store.ts</span> <span class="comment"># user, tokens, isAuthenticated</span>
+│   └── <span class="file ext-ts">booking.store.ts</span> <span class="comment"># selectedSeats, passengers</span>
+│
+├── <span class="dir">types/</span>
+│   ├── <span class="file ext-ts">auth.types.ts</span>
+│   ├── <span class="file ext-ts">trip.types.ts</span>
+│   ├── <span class="file ext-ts">booking.types.ts</span>
+│   ├── <span class="file ext-ts">payment.types.ts</span>
+│   ├── <span class="file ext-ts">ticket.types.ts</span>
+│   └── <span class="file ext-ts">bus.types.ts</span>
+│
+├── <span class="dir">schemas/</span> <span class="comment"># Zod schemas</span>
+├── <span class="dir">constants/</span> <span class="comment"># routes, queryKeys, bookingStatus</span>
+└── <span class="dir">utils/</span> <span class="comment"># formatDate, formatPrice, handleApiError</span>
+</pre>
+</div>
+
+
+    <!-- ─── SERVICES ─── -->
+    <h2 id="a-services"><span class="h-icon" style="background:rgba(16,185,129,.15)">🔌</span>Services — ارتباط با API</h2>
+
+    <h3>services/api.ts — Axios Instance</h3>
+    <div class="code-block">
+<pre><span class="kw">import</span> axios <span class="kw">from</span> <span class="str">"axios"</span>;
+<span class="kw">import</span> Cookies <span class="kw">from</span> <span class="str">"js-cookie"</span>;
+
+<span class="kw">export const</span> api = axios.<span class="fn">create</span>({
+  baseURL: process.env.<span class="type">NEXT_PUBLIC_API_BASE_URL</span>,
+});
+
+api.interceptors.request.<span class="fn">use</span>((config) => {
+  <span class="kw">const</span> token = <span class="kw">typeof</span> window !== <span class="str">"undefined"</span>
+    ? Cookies.<span class="fn">get</span>(<span class="str">"access_token"</span>) : <span class="kw">null</span>;
+
+  <span class="kw">if</span> (token) {
+    config.headers.<span class="type">Authorization</span> = <span class="str">`Bearer <span style="color:#fcd34d">${token}</span>`</span>;
+  }
+  <span class="kw">return</span> config;
+});</pre>
+    </div>
+
+    <h3>services/trips.service.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">export const</span> tripsService = {
+  list:    <span class="kw">async</span> (page = <span class="num">1</span>, pageSize = <span class="num">10</span>) => { ... },
+  search:  <span class="kw">async</span> (params: <span class="type">SearchTripsParams</span>) => { ... },
+  getById: <span class="kw">async</span> (id: <span class="type">number</span> | <span class="type">string</span>) => { ... },
+  getSeats:<span class="kw">async</span> (id: <span class="type">number</span> | <span class="type">string</span>) => { ... },
+  create:  <span class="kw">async</span> (payload: <span class="type">CreateTripPayload</span>) => { ... },
+  update:  <span class="kw">async</span> (id, payload: <span class="type">UpdateTripPayload</span>) => { ... },
+  remove:  <span class="kw">async</span> (id: <span class="type">number</span> | <span class="type">string</span>) => { ... },
+};</pre>
+    </div>
+
+    <h3>services/auth.service.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">export const</span> authService = {
+  login:         <span class="kw">async</span> (payload: <span class="type">LoginPayload</span>) => { ... },
+  registerUser:  <span class="kw">async</span> (payload: <span class="type">RegisterUserPayload</span>) => { ... },
+  registerOwner: <span class="kw">async</span> (payload: <span class="type">RegisterOwnerPayload</span>) => { ... },
+  refreshToken:  <span class="kw">async</span> (refresh: <span class="type">string</span>) => { ... },
+  me:            <span class="kw">async</span> () => { ... }, <span class="cm">// GET /api/accounts/me/</span>
+};</pre>
+    </div>
+
+    <h3>services/booking.service.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">export const</span> bookingService = {
+  create:  <span class="kw">async</span> (payload: <span class="type">CreateBookingPayload</span>) => { ... },
+  list:    <span class="kw">async</span> (params?: { status?, from_date?, page? }) => { ... },
+  getById: <span class="kw">async</span> (id) => { ... },
+  cancel:  <span class="kw">async</span> (id) => { ... }, <span class="cm">// PATCH /api/bookings/{id}/cancel/</span>
+  stats:   <span class="kw">async</span> () => { ... },   <span class="cm">// GET /api/bookings/stats/</span>
+};</pre>
+    </div>
+
+    <!-- ─── TYPES ─── -->
+    <h2 id="a-types"><span class="h-icon" style="background:rgba(245,158,11,.15)">🔷</span>Types — TypeScript Interfaces</h2>
+
+    <h3>types/trip.types.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">export type</span> <span class="type">TripStatus</span> = <span class="str">"scheduled"</span> | <span class="str">"cancelled"</span> | <span class="str">"completed"</span>;
+<span class="kw">export type</span> <span class="type">SeatStatus</span> = <span class="str">"available"</span> | <span class="str">"reserved"</span> | <span class="str">"unavailable"</span> | <span class="str">"selected"</span>;
+
+<span class="kw">export interface</span> <span class="type">Trip</span> {
+  id: <span class="type">number</span>; bus: <span class="type">number</span>;
+  origin_city: <span class="type">number</span> | <span class="type">string</span>;
+  destination_city: <span class="type">number</span> | <span class="type">string</span>;
+  origin_city_name: <span class="type">string</span>;
+  destination_city_name: <span class="type">string</span>;
+  departure: <span class="type">string</span>; arrival: <span class="type">string</span>;
+  price: <span class="type">string</span>; status: <span class="type">TripStatus</span>;
+  available_seats: <span class="type">number</span>;
+}
+
+<span class="kw">export interface</span> <span class="type">Seat</span> {
+  id: <span class="type">number</span>; number: <span class="type">number</span>; status: <span class="type">SeatStatus</span>;
+}</pre>
+    </div>
+
+    <h3>types/booking.types.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">export type</span> <span class="type">BookingStatus</span> = <span class="str">"pending_payment"</span> | <span class="str">"paid"</span> | <span class="str">"canceled"</span> | <span class="str">"expired"</span>;
+
+<span class="kw">export interface</span> <span class="type">CreateBookingPayload</span> {
+  trip: <span class="type">number</span>;
+  seat_ids: <span class="type">number</span>[];
+  passengers: <span class="type">PassengerPayload</span>[];
+}
+
+<span class="kw">export interface</span> <span class="type">BookingStats</span> {
+  total_bookings: <span class="type">number</span>; paid_bookings: <span class="type">number</span>;
+  pending_bookings: <span class="type">number</span>; total_revenue: <span class="type">string</span>;
+}</pre>
+    </div>
+
+    <!-- ─── STORE ─── -->
+    <h2 id="a-store"><span class="h-icon" style="background:rgba(6,182,212,.15)">🐻</span>Store — Zustand</h2>
+
+    <h3>store/auth.store.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">interface</span> <span class="type">AuthState</span> {
+  user: <span class="type">Account</span> | <span class="kw">null</span>;
+  accessToken: <span class="type">string</span> | <span class="kw">null</span>;
+  isAuthenticated: <span class="type">boolean</span>;
+  setAuth: (data: { user, accessToken, refreshToken }) => <span class="type">void</span>;
+  logout: () => <span class="type">void</span>;
+}
+
+<span class="kw">export const</span> useAuthStore = create&lt;<span class="type">AuthState</span>&gt;((set) => ({
+  <span class="cm">// ذخیره tokens در Cookies + state</span>
+  setAuth: ({ user, accessToken, refreshToken }) => {
+    Cookies.<span class="fn">set</span>(<span class="str">"access_token"</span>, accessToken);
+    Cookies.<span class="fn">set</span>(<span class="str">"refresh_token"</span>, refreshToken);
+    <span class="fn">set</span>({ user, accessToken, isAuthenticated: <span class="kw">true</span> });
+  },
+  logout: () => {
+    Cookies.<span class="fn">remove</span>(<span class="str">"access_token"</span>);
+    Cookies.<span class="fn">remove</span>(<span class="str">"refresh_token"</span>);
+    <span class="fn">set</span>({ user: <span class="kw">null</span>, accessToken: <span class="kw">null</span>, isAuthenticated: <span class="kw">false</span> });
+  },
+}));</pre>
+    </div>
+
+    <h3>store/booking.store.ts</h3>
+    <div class="code-block">
+<pre><span class="kw">interface</span> <span class="type">BookingState</span> {
+  selectedSeats: <span class="type">Seat</span>[];
+  passengers: <span class="type">PassengerPayload</span>[];
+  setSelectedSeats: (seats: <span class="type">Seat</span>[]) => <span class="type">void</span>;
+  setPassengers: (passengers: <span class="type">PassengerPayload</span>[]) => <span class="type">void</span>;
+  resetBooking: () => <span class="type">void</span>;
+}</pre>
+    </div>
+
+    <!-- ─── SCHEMAS ─── -->
+    <h2 id="a-schemas"><span class="h-icon" style="background:rgba(139,92,246,.15)">✅</span>Schemas — Zod Validation</h2>
+
+    <div class="code-block">
+<pre><span class="cm">// schemas/auth.schema.ts</span>
+<span class="kw">export const</span> loginSchema = z.<span class="fn">object</span>({
+  phone: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">10</span>, <span class="str">"شماره موبایل معتبر نیست"</span>),
+  password: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">6</span>, <span class="str">"رمز عبور حداقل ۶ کاراکتر"</span>),
+});
+
+<span class="cm">// schemas/booking.schema.ts</span>
+<span class="kw">export const</span> passengerSchema = z.<span class="fn">object</span>({
+  first_name: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">1</span>),
+  last_name: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">1</span>),
+  national_code: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">10</span>).<span class="fn">max</span>(<span class="num">10</span>),
+  phone: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">10</span>),
+});
+
+<span class="cm">// schemas/bus.schema.ts</span>
+<span class="kw">export const</span> busSchema = z.<span class="fn">object</span>({
+  name: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">1</span>),
+  type: z.<span class="fn">string</span>().<span class="fn">min</span>(<span class="num">1</span>),
+  seat_count: z.coerce.<span class="fn">number</span>().<span class="fn">min</span>(<span class="num">10</span>),
+});</pre>
+    </div>
+
+    <!-- ─── CONSTANTS ─── -->
+    <h2 id="a-constants"><span class="h-icon" style="background:rgba(6,182,212,.15)">📌</span>Constants</h2>
+
+    <div class="code-block">
+<pre><span class="cm">// constants/routes.ts</span>
+<span class="kw">export const</span> <span class="type">ROUTES</span> = {
+  home: <span class="str">"/"</span>, search: <span class="str">"/search"</span>,
+  login: <span class="str">"/login"</span>, register: <span class="str">"/register"</span>,
+  userDashboard: <span class="str">"/user/dashboard"</span>,
+  userBookings: <span class="str">"/user/bookings"</span>,
+  ownerDashboard: <span class="str">"/owner/dashboard"</span>,
+  ownerBuses: <span class="str">"/owner/buses"</span>,
+  ownerTrips: <span class="str">"/owner/trips"</span>,
+};
+
+<span class="cm">// constants/queryKeys.ts</span>
+<span class="kw">export const</span> <span class="type">QUERY_KEYS</span> = {
+  trips: [<span class="str">"trips"</span>],
+  trip: (id) => [<span class="str">"trip"</span>, id],
+  tripSeats: (id) => [<span class="str">"trip-seats"</span>, id],
+  bookings: [<span class="str">"bookings"</span>],
+  bookingStats: [<span class="str">"booking-stats"</span>],
+  tickets: [<span class="str">"tickets"</span>],
+  buses: [<span class="str">"buses"</span>],
+};
+
+<span class="cm">// constants/bookingStatus.ts</span>
+<span class="kw">export const</span> <span class="type">BOOKING_STATUS_LABELS</span> = {
+  pending_payment: <span class="str">"در انتظار پرداخت"</span>,
+  paid: <span class="str">"پرداخت شده"</span>,
+  canceled: <span class="str">"لغو شده"</span>,
+  expired: <span class="str">"منقضی شده"</span>,
+};</pre>
+    </div>
+
+    <!-- ─── HOOKS & PATTERNS ─── -->
+    <h2 id="a-hooks"><span class="h-icon" style="background:rgba(59,130,246,.15)">🪝</span>Hooks &amp; Patterns</h2>
+
+    <h3>نمونه Query Hook</h3>
+    <div class="code-block">
+<pre><span class="kw">import</span> { useQuery } <span class="kw">from</span> <span class="str">"@tanstack/react-query"</span>;
+<span class="kw">import</span> { tripsService } <span class="kw">from</span> <span class="str">"@/services/trips.service"</span>;
+<span class="kw">import</span> { <span class="type">QUERY_KEYS</span> } <span class="kw">from</span> <span class="str">"@/constants/queryKeys"</span>;
+
+<span class="kw">export function</span> <span class="fn">useTripDetails</span>(id: <span class="type">string</span> | <span class="type">number</span>) {
+  <span class="kw">return</span> <span class="fn">useQuery</span>({
+    queryKey: <span class="type">QUERY_KEYS</span>.<span class="fn">trip</span>(id),
+    queryFn: () => tripsService.<span class="fn">getById</span>(id),
+    enabled: <span class="type">Boolean</span>(id),
+  });
+}</pre>
+    </div>
+
+    <h3>نمونه Mutation Hook</h3>
+    <div class="code-block">
+<pre><span class="kw">import</span> { useMutation, useQueryClient } <span class="kw">from</span> <span class="str">"@tanstack/react-query"</span>;
+
+<span class="kw">export function</span> <span class="fn">useCreateBooking</span>() {
+  <span class="kw">const</span> queryClient = <span class="fn">useQueryClient</span>();
+  <span class="kw">return</span> <span class="fn">useMutation</span>({
+    mutationFn: bookingService.create,
+    onSuccess: () => {
+      queryClient.<span class="fn">invalidateQueries</span>({ queryKey: <span class="type">QUERY_KEYS</span>.bookings });
+    },
+  });
+}</pre>
+    </div>
+
+    <h3>app/providers.tsx — QueryClient + Toaster</h3>
+    <div class="code-block">
+<pre><span class="str">"use client"</span>;
+<span class="kw">import</span> { QueryClient, QueryClientProvider } <span class="kw">from</span> <span class="str">"@tanstack/react-query"</span>;
+<span class="kw">import</span> { Toaster } <span class="kw">from</span> <span class="str">"sonner"</span>;
+
+<span class="kw">export function</span> <span class="fn">Providers</span>({ children }) {
+  <span class="kw">const</span> [queryClient] = <span class="fn">useState</span>(() => <span class="kw">new</span> <span class="type">QueryClient</span>());
+  <span class="kw">return</span> (
+    &lt;<span class="type">QueryClientProvider</span> client={queryClient}&gt;
+      {children}
+      &lt;<span class="type">Toaster</span> richColors position=<span class="str">"top-center"</span> /&gt;
+    &lt;/<span class="type">QueryClientProvider</span>&gt;
+  );
+}
+
+<span class="cm">// app/layout.tsx — RTL</span>
+&lt;html lang=<span class="str">"fa"</span> dir=<span class="str">"rtl"</span>&gt;
+  &lt;body&gt;&lt;<span class="type">Providers</span>&gt;{children}&lt;/<span class="type">Providers</span>&gt;&lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+
+    <!-- ─── API REFERENCE ─── -->
+    <h2 id="a-api-ref"><span class="h-icon" style="background:rgba(16,185,129,.15)">📡</span>API Reference — همه Endpoints</h2>
+
+    <h3>Auth APIs</h3>
+    <table class="data-table">
+      <thead><tr><th>Method</th><th>Endpoint</th><th>توضیح</th><th>Auth</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/accounts/user/register/</code></td><td>ثبت‌نام کاربر</td><td>—</td></tr>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/accounts/owner/register/</code></td><td>ثبت‌نام مالک</td><td>—</td></tr>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/accounts/account/login</code></td><td>ورود</td><td>—</td></tr>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/accounts/refresh-token/</code></td><td>Refresh JWT</td><td>—</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/accounts/me/</code></td><td>اطلاعات کاربر فعلی</td><td>JWT</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Trips APIs</h3>
+    <table class="data-table">
+      <thead><tr><th>Method</th><th>Endpoint</th><th>توضیح</th><th>Auth</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/</code></td><td>لیست سفرها</td><td>— / Owner filtered</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/search/</code></td><td>جستجوی سفر</td><td>—</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/{id}/</code></td><td>جزئیات سفر</td><td>—</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/{id}/seats/</code></td><td>صندلی‌های سفر</td><td>—</td></tr>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/</code></td><td>ایجاد سفر</td><td>Owner</td></tr>
+        <tr><td><span class="method patch" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(245,158,11,.2);color:var(--amber2)">PATCH</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/{id}/</code></td><td>ویرایش سفر</td><td>Owner</td></tr>
+        <tr><td><span class="method delete" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(239,68,68,.2);color:var(--red2)">DEL</span></td><td><code style="font-family:monospace;font-size:12px">/api/trips/company/trips/{id}/</code></td><td>حذف سفر</td><td>Owner</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Bookings APIs</h3>
+    <table class="data-table">
+      <thead><tr><th>Method</th><th>Endpoint</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/bookings/</code></td><td>ایجاد رزرو — User only</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/bookings/</code></td><td>لیست رزروها (User: خودش | Owner: شرکت)</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/bookings/{id}/</code></td><td>جزئیات رزرو</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/bookings/stats/</code></td><td>آمار رزروها</td></tr>
+        <tr><td><span class="method patch" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(245,158,11,.2);color:var(--amber2)">PATCH</span></td><td><code style="font-family:monospace;font-size:12px">/api/bookings/{id}/cancel/</code></td><td>لغو رزرو pending</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Payments &amp; Tickets</h3>
+    <table class="data-table">
+      <thead><tr><th>Method</th><th>Endpoint</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/payments/pay/</code></td><td>پرداخت — User only</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/tickets/</code></td><td>لیست بلیط‌ها — GET only</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/tickets/{id}/</code></td><td>جزئیات بلیط</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Buses (Owner Only)</h3>
+    <table class="data-table">
+      <thead><tr><th>Method</th><th>Endpoint</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/companies/company/buses/</code></td><td>لیست اتوبوس‌ها</td></tr>
+        <tr><td><span class="method post" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(59,130,246,.2);color:var(--accent2)">POST</span></td><td><code style="font-family:monospace;font-size:12px">/api/companies/company/buses/</code></td><td>ایجاد اتوبوس</td></tr>
+        <tr><td><span class="method get" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(16,185,129,.2);color:var(--green2)">GET</span></td><td><code style="font-family:monospace;font-size:12px">/api/companies/company/buses/{id}/</code></td><td>جزئیات اتوبوس</td></tr>
+        <tr><td><span class="method patch" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(245,158,11,.2);color:var(--amber2)">PATCH</span></td><td><code style="font-family:monospace;font-size:12px">/api/companies/company/buses/{id}/</code></td><td>ویرایش اتوبوس</td></tr>
+        <tr><td><span class="method delete" style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:800;background:rgba(239,68,68,.2);color:var(--red2)">DEL</span></td><td><code style="font-family:monospace;font-size:12px">/api/companies/company/buses/{id}/</code></td><td>حذف اتوبوس</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ─── GOLDEN RULE ─── -->
+    <h2 id="a-golden-rule"><span class="h-icon" style="background:rgba(245,158,11,.15)">⭐</span>قانون طلایی پروژه</h2>
+
+    <div class="info-box green">
+      <div class="info-box-title" style="color:var(--green2)">✅ درست — Data Flow صحیح</div>
+      <div class="code-block" style="margin-top:10px;background:transparent;border:none;padding:0">
+<pre style="font-family:monospace;font-size:13px;color:var(--text2)">page.tsx
+  ↓
+feature component
+  ↓
+React Query hook (useQuery / useMutation)
+  ↓
+service function (tripsService.getById)
+  ↓
+api.ts (Axios instance)</pre>
+      </div>
+    </div>
+
+    <div class="info-box red" style="margin-top:12px">
+      <div class="info-box-title" style="color:var(--red2)">❌ غلط — هیچ‌وقت اینکار نشود</div>
+      <div class="code-block" style="margin-top:10px;background:transparent;border:none;padding:0">
+<pre style="font-family:monospace;font-size:13px;color:var(--text3)">page.tsx
+  ↓
+axios.get('/api/trips/...') <span style="color:var(--red2)">// مستقیم در page.tsx!</span></pre>
+      </div>
+    </div>
+
+    <div class="info-box blue" style="margin-top:24px">
+      <div class="info-box-title">خلاصه ذهنی پروژه</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px">
+        <div><code style="font-family:monospace;font-size:12px;color:var(--accent2)">Auth</code><br><small style="color:var(--text3)">ورود، ثبت‌نام، نقش</small></div>
+        <div><code style="font-family:monospace;font-size:12px;color:var(--green2)">Trips</code><br><small style="color:var(--text3)">جستجو و نمایش</small></div>
+        <div><code style="font-family:monospace;font-size:12px;color:var(--amber2)">Booking</code><br><small style="color:var(--text3)">صندلی و رزرو</small></div>
+        <div><code style="font-family:monospace;font-size:12px;color:var(--purple2)">Payment</code><br><small style="color:var(--text3)">پرداخت و بلیط</small></div>
+        <div><code style="font-family:monospace;font-size:12px;color:var(--cyan)">Tickets</code><br><small style="color:var(--text3)">نمایش بلیط</small></div>
+        <div><code style="font-family:monospace;font-size:12px;color:var(--red2)">Owner</code><br><small style="color:var(--text3)">مدیریت شرکت</small></div>
+      </div>
+    </div>
+
+    <div style="height:80px"></div>
+
+  </div><!-- /content -->
+</main><!-- /main -->
+
+<script>
+  // Active nav on scroll
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -75% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
