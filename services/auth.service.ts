@@ -16,17 +16,14 @@ import type {
 
 export const authService = {
   login: async (payload: LoginPayload) => {
-    const res = await api.post<LoginResponse>(
-      "/api/accounts/account/login",
-      payload,
-    );
+    const res = await api.post<LoginResponse>("/api/account/login", payload);
 
     return res.data;
   },
 
   registerUser: async (payload: RegisterUserPayload) => {
     const res = await api.post<RegisterUserResponse>(
-      "/api/accounts/user/register/",
+      "/api/user/register/",
       payload,
     );
 
@@ -35,7 +32,7 @@ export const authService = {
 
   registerOwner: async (payload: RegisterOwnerPayload) => {
     const res = await api.post<RegisterOwnerResponse>(
-      "/api/accounts/owner/register/",
+      "/api/owner/register/",
       payload,
     );
 
@@ -50,7 +47,7 @@ export const authService = {
 
     return res.data;
   },
-  
+
   me: async () => {
     const res = await api.get<UserProfile>("/api/accounts/me/");
 
