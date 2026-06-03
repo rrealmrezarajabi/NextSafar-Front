@@ -6,9 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginPayload } from "@/schemas/auth.schema";
 import { useLogin } from "../hooks/useLogin";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export function LoginForm() {
   const loginMutation = useLogin();
+  const searchParams = useSearchParams();
+  const nextPath = searchParams.get("next");
+  const registerHref = nextPath
+    ? `/register?next=${encodeURIComponent(nextPath)}`
+    : "/register";
 
   const form = useForm<LoginPayload>({
     resolver: zodResolver(loginSchema),
@@ -78,7 +84,7 @@ export function LoginForm() {
         {loginMutation.isPending ? "در حال ورود..." : "ورود"}
       </button>
       <p className="text-blue-400 text-center font-medium text-fg-brand underline hover:no-underline">
-        <Link href="/register">اگر حساب ندارید ثبت نام کنید</Link>
+        <Link href={registerHref}>اگر حساب ندارید ثبت نام کنید</Link>
       </p>
     </form>
   );

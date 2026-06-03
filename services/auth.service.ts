@@ -41,7 +41,7 @@ export const authService = {
 
   refreshToken: async (refresh: string) => {
     const res = await api.post<RefreshTokenResponse>(
-      "/api/accounts/refresh-token/",
+      "/api/refresh-token/",
       { refresh },
     );
 

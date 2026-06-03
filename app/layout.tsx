@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Vazirmatn, Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-
-const vazirmatn = Vazirmatn({
-  subsets: ["arabic"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "NextSafar",
@@ -21,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fa" dir="rtl" className={cn("font-sans", geist.variable)}>
-      <body className={vazirmatn.className}>
+    <html lang="fa" dir="rtl">
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>

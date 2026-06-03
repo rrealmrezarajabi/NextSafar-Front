@@ -8,9 +8,11 @@ import {
   tripSearchSchema,
   type TripSearchFormValues,
 } from "@/schemas/trip.schema";
+import { useCities } from "@/features/cities";
 
 export function TripSearchForm() {
   const router = useRouter();
+  const { data: cities = [], isLoading: areCitiesLoading } = useCities();
 
   const form = useForm<TripSearchFormValues>({
     resolver: zodResolver(tripSearchSchema),
@@ -40,11 +42,19 @@ export function TripSearchForm() {
       <div className="space-y-2">
         <label className="text-sm font-medium text-[#0F172A]">مبدا</label>
 
-        <input
+        <select
           {...form.register("origin")}
-          placeholder="تهران"
           className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20"
-        />
+        >
+          <option value="">
+            {areCitiesLoading ? "در حال دریافت شهرها..." : "انتخاب مبدا"}
+          </option>
+          {cities.map((city) => (
+            <option key={city.id} value={city.name}>
+              {city.name}
+            </option>
+          ))}
+        </select>
 
         {form.formState.errors.origin && (
           <p className="text-sm text-[#DC2626]">
@@ -56,11 +66,19 @@ export function TripSearchForm() {
       <div className="space-y-2">
         <label className="text-sm font-medium text-[#0F172A]">مقصد</label>
 
-        <input
+        <select
           {...form.register("destination")}
-          placeholder="شیراز"
           className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20"
-        />
+        >
+          <option value="">
+            {areCitiesLoading ? "در حال دریافت شهرها..." : "انتخاب مقصد"}
+          </option>
+          {cities.map((city) => (
+            <option key={city.id} value={city.name}>
+              {city.name}
+            </option>
+          ))}
+        </select>
 
         {form.formState.errors.destination && (
           <p className="text-sm text-[#DC2626]">

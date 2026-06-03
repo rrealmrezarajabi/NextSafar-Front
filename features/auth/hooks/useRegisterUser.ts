@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { authService } from "@/services/auth.service";
@@ -8,6 +8,7 @@ import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export function useRegisterUser() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const setAuth = useAuthStore((state) => state.setAuth);
 
   return useMutation({
@@ -21,6 +22,13 @@ export function useRegisterUser() {
       });
 
       toast.success("ثبت‌نام با موفقیت انجام شد");
+      const nextPath = searchParams.get("next");
+
+      if (nextPath?.startsWith("/")) {
+        router.push(nextPath);
+        return;
+      }
+
       router.push("/user/dashboard");
     },
 

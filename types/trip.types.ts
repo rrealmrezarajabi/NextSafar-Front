@@ -1,4 +1,4 @@
-export type TripStatus = "scheduled" | "cancelled" | "completed";
+export type TripStatus = "active" | "canceled" | "completed";
 
 export interface Trip {
   id: number;
