@@ -1,7 +1,0 @@
-POST   /api/accounts/user/register/     - User registration
-POST   /api/accounts/owner/register/    - Owner registration  
-POST   /api/accounts/account/login      - Login (get JWT)
-GET    /api/trips/company/trips/        - List available trips
-POST   /api/bookings/                   - Create booking
-POST   /api/payments/pay/               - Pay for booking
-GET    /api/tickets/                    - View tickets

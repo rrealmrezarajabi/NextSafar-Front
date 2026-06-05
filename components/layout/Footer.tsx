@@ -51,9 +51,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-[#E2E8F0] py-4 text-center text-xs text-[#64748B]">
-        © 2026 BusTicket. All rights reserved.
-      </div>
+     
     </footer>
   );
 }
