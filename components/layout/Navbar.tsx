@@ -7,6 +7,7 @@ import { LogOut, UserCircle } from "lucide-react";
 
 import { useMe } from "@/features/auth";
 import { useAuthStore } from "@/store/auth.store";
+import Image from "next/image";
 
 export function Navbar() {
   const router = useRouter();
@@ -26,14 +27,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-[#E2E8F0] bg-white/90 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB] text-white">
-            🚌
-          </div>
-
-          <div>
-            <p className="text-sm font-bold text-[#0F172A]">BusTicket</p>
-            <p className="text-xs text-[#64748B]">رزرو بلیط اتوبوس</p>
-          </div>
+          <Image src="/logo.png" alt="logo" width={100} height={300} />
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">
