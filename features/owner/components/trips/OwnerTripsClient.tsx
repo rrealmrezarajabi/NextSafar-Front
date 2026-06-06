@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import {
   type CreateTripPayload,
 } from "@/services/owner-trips.service";
+import { JalaliDateInput } from "@/components/ui/JalaliDateInput";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 import { useBuses } from "../../hooks/useBuses";
 import { useCities } from "@/features/cities";
@@ -160,33 +161,31 @@ export function OwnerTripsClient() {
               </select>
             </label>
 
-            <label className="space-y-2">
+            <label className="space-y-2 md:col-span-2">
               <span className="text-sm font-medium text-[#0F172A]">زمان حرکت</span>
-              <input
-                type="datetime-local"
+              <JalaliDateInput
                 value={form.departure}
-                onChange={(event) =>
+                onChange={(departure) =>
                   setForm((current) => ({
                     ...current,
-                    departure: event.target.value,
+                    departure,
                   }))
                 }
-                className="h-11 w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20"
+                includeTime
               />
             </label>
 
-            <label className="space-y-2">
+            <label className="space-y-2 md:col-span-2">
               <span className="text-sm font-medium text-[#0F172A]">زمان رسیدن</span>
-              <input
-                type="datetime-local"
+              <JalaliDateInput
                 value={form.arrival}
-                onChange={(event) =>
+                onChange={(arrival) =>
                   setForm((current) => ({
                     ...current,
-                    arrival: event.target.value,
+                    arrival,
                   }))
                 }
-                className="h-11 w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20"
+                includeTime
               />
             </label>
 

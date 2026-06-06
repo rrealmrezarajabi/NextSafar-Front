@@ -1,13 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   tripSearchSchema,
   type TripSearchFormValues,
 } from "@/schemas/trip.schema";
+import { JalaliDateInput } from "@/components/ui/JalaliDateInput";
 import { useCities } from "@/features/cities";
 
 export function TripSearchForm() {
@@ -22,6 +23,10 @@ export function TripSearchForm() {
       destination: "",
       date: "",
     },
+  });
+  const selectedDate = useWatch({
+    control: form.control,
+    name: "date",
   });
 
   const onSubmit = (values: TripSearchFormValues) => {
@@ -90,10 +95,14 @@ export function TripSearchForm() {
       <div className="space-y-2">
         <label className="text-sm font-medium text-[#0F172A]">تاریخ حرکت</label>
 
-        <input
-          type="date"
-          {...form.register("date")}
-          className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20"
+        <JalaliDateInput
+          value={selectedDate ?? ""}
+          onChange={(date) =>
+            form.setValue("date", date, {
+              shouldDirty: true,
+              shouldValidate: true,
+            })
+          }
         />
 
         {form.formState.errors.date && (
