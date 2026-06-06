@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { Trip } from "@/types/trip.types";
+import { getTripStatusLabel, type Trip } from "@/types/trip.types";
 
 interface TripDetailsCardProps {
   trip: Trip;
@@ -70,7 +70,9 @@ export function TripDetailsCard({ trip }: TripDetailsCardProps) {
 
         <div className="rounded-2xl bg-[#F8FAFC] p-4">
           <p className="text-sm text-[#64748B]">وضعیت سفر</p>
-          <p className="mt-1 font-bold text-[#0F172A]">{trip.status}</p>
+          <p className="mt-1 font-bold text-[#0F172A]">
+            {getTripStatusLabel(trip.status)}
+          </p>
         </div>
       </div>
 
